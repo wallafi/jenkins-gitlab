@@ -1,0 +1,23 @@
+image: docker:stable 
+
+stages:
+- build
+- teste
+- deploy 
+- notificacao 
+
+build-docker:
+  services:
+  - docker:dind 
+
+  before_script:
+  - docker info
+  - docker login -u wallafi -p santos123
+
+  stage: build 
+  script:
+  - docker build -t gitlab .
+  - docker tag gitlab wallafi/gitlab 
+  - docker push wallafi/gitlab
+
+  
